@@ -35,35 +35,32 @@
     .symbols {
       display: flex;
       justify-content: center;
-      gap: 2em;
+      flex-wrap: wrap;
+      gap: 1.5em;
       margin: 2em 0;
       align-items: center;
-      flex-wrap: wrap;
     }
     .symbol-container {
       position: relative;
-      display: inline-block;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .tooltip {
-      position: absolute;
+      position: fixed;
       background-color: rgba(0, 0, 0, 0.7);
       color: #fff;
       padding: 5px 10px;
       border-radius: 5px;
       font-size: 0.9em;
       white-space: nowrap;
-      top: -2em;
-      left: 50%;
-      transform: translateX(-50%);
-      display: none;
       pointer-events: none;
-    }
-    .symbol-container:hover .tooltip {
-      display: block;
+      transform: translate(-50%, -150%);
+      z-index: 1000;
     }
     .symbol {
-      width: 20vw;
-      max-width: 200px;
+      width: 18vw;
+      max-width: 180px;
       aspect-ratio: 1.618;
       transition: transform 0.4s;
       cursor: pointer;
@@ -73,7 +70,7 @@
     }
     .equals {
       font-size: 2em;
-      margin: 0 1em;
+      margin: 0 0.5em;
       color: #333;
     }
     .section {
@@ -101,34 +98,24 @@
   </header>
 
   <div class="symbols">
-    <div class="symbol-container" onclick="showText('F')">
-      <div class="tooltip" id="tooltipF"></div>
-      <img src="assets/animations/infinity_F_static.webp" class="symbol" alt="Frequenz"
-           onmouseover="this.src='assets/animations/infinity_F_Animated_Moon.webp'"
-           onmouseout="this.src='assets/animations/infinity_F_static.webp'">
+    <div class="symbol-container" onmouseover="setTooltip('F')" onmousemove="moveTooltip(event)" onmouseout="hideTooltip()" onclick="showText('F')">
+      <img id="symbolF" src="assets/animations/infinity_F_static.webp" class="symbol" alt="Frequenz">
     </div>
     <span class="equals">&asymp;</span>
-    <div class="symbol-container" onclick="showText('A')">
-      <div class="tooltip" id="tooltipA"></div>
-      <img src="assets/animations/infinity_A_static.webp" class="symbol" alt="Amplitude"
-           onmouseover="this.src='assets/animations/infinity_A_Animated_Earth.webp'"
-           onmouseout="this.src='assets/animations/infinity_A_static.webp'">
+    <div class="symbol-container" onmouseover="setTooltip('A')" onmousemove="moveTooltip(event)" onmouseout="hideTooltip()" onclick="showText('A')">
+      <img id="symbolA" src="assets/animations/infinity_A_static.webp" class="symbol" alt="Amplitude">
     </div>
     <span class="equals">&asymp;</span>
-    <div class="symbol-container" onclick="showText('T')">
-      <div class="tooltip" id="tooltipT"></div>
-      <img src="assets/animations/infinity_T_static.webp" class="symbol" alt="Trägheit"
-           onmouseover="this.src='assets/animations/infinity_T_Animated_Sun.webp'"
-           onmouseout="this.src='assets/animations/infinity_T_static.webp'">
+    <div class="symbol-container" onmouseover="setTooltip('T')" onmousemove="moveTooltip(event)" onmouseout="hideTooltip()" onclick="showText('T')">
+      <img id="symbolT" src="assets/animations/infinity_T_static.webp" class="symbol" alt="Trägheit">
     </div>
-    <span class="equals">&asymp;</span>
-    <div class="symbol-container" onclick="showText('META')">
-      <div class="tooltip" id="tooltipMETA"></div>
-      <img src="assets/animations/infinity_T_Animated_Sun.webp" class="symbol" alt="Meta"
-           onmouseover="this.src='assets/animations/infinity_T_static.webp'"
-           onmouseout="this.src='assets/animations/infinity_T_Animated_Sun.webp'">
+    <span class="equals">=</span>
+    <div class="symbol-container" onmouseover="setTooltip('META'); activateAll()" onmousemove="moveTooltip(event)" onmouseout="deactivateAll(); hideTooltip()" onclick="showText('META')">
+      <img id="symbolMETA" src="assets/animations/infinity_T_Animated_Sun.webp" class="symbol" alt="Meta">
     </div>
   </div>
+
+  <div id="tooltip" class="tooltip hidden"></div>
 
   <section class="section hidden" id="textF">
     <h2>Frequenz</h2>
@@ -152,25 +139,45 @@
   </footer>
 
   <script>
-    const termsF = ["Frequenz", "Zeit", "Bewegung", "Impuls", "Welle"];
-    const termsA = ["Stärke", "Intensität", "Volumen", "Signal"];
-    const termsT = ["Speicher", "Reaktion", "Verzögerung", "Trägheit"];
-    const termsMETA = ["420", "SOS", "101", "Herz", "∞", "Leben"];
+    const tooltip = document.getElementById("tooltip");
+    const terms = {
+      F: ["Frequenz", "Zeit", "Bewegung", "Impuls", "Welle"],
+      A: ["Stärke", "Intensität", "Volumen", "Signal"],
+      T: ["Speicher", "Reaktion", "Verzögerung", "Trägheit"],
+      META: ["420", "SOS", "101", "Herz", "∞", "Leben"]
+    };
 
-    function getRandomTerm(list) {
-      return list[Math.floor(Math.random() * list.length)];
+    function setTooltip(key) {
+      tooltip.innerText = terms[key][Math.floor(Math.random() * terms[key].length)];
+      tooltip.classList.remove("hidden");
     }
 
-    document.getElementById("tooltipF").innerText = getRandomTerm(termsF);
-    document.getElementById("tooltipA").innerText = getRandomTerm(termsA);
-    document.getElementById("tooltipT").innerText = getRandomTerm(termsT);
-    document.getElementById("tooltipMETA").innerText = getRandomTerm(termsMETA);
+    function moveTooltip(e) {
+      tooltip.style.left = `${e.pageX}px`;
+      tooltip.style.top = `${e.pageY}px`;
+    }
+
+    function hideTooltip() {
+      tooltip.classList.add("hidden");
+    }
 
     function showText(id) {
       ["F", "A", "T", "META"].forEach(s => {
         document.getElementById("text" + s).classList.add("hidden");
       });
       document.getElementById("text" + id).classList.remove("hidden");
+    }
+
+    function activateAll() {
+      document.getElementById("symbolF").src = "assets/animations/infinity_F_Animated_Moon.webp";
+      document.getElementById("symbolA").src = "assets/animations/infinity_A_Animated_Earth.webp";
+      document.getElementById("symbolT").src = "assets/animations/infinity_T_Animated_Sun.webp";
+    }
+
+    function deactivateAll() {
+      document.getElementById("symbolF").src = "assets/animations/infinity_F_static.webp";
+      document.getElementById("symbolA").src = "assets/animations/infinity_A_static.webp";
+      document.getElementById("symbolT").src = "assets/animations/infinity_T_static.webp";
     }
   </script>
 </body>
