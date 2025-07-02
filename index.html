@@ -138,47 +138,99 @@
     ReSonet v0.1 · Made with Liebe & Logik · <a href="#" style="color:#1abc9c; text-decoration:none;">Sprache: DE</a>
   </footer>
 
-  <script>
-    const tooltip = document.getElementById("tooltip");
-    const terms = {
-      F: ["Frequenz", "Zeit", "Bewegung", "Impuls", "Welle"],
-      A: ["Stärke", "Intensität", "Volumen", "Signal"],
-      T: ["Speicher", "Reaktion", "Verzögerung", "Trägheit"],
-      META: ["420", "SOS", "101", "Herz", "∞", "Leben"]
-    };
+<script>
+  const termsF = ["Frequenz", "Zeit", "Bewegung", "Impuls", "Welle"];
+  const termsA = ["Stärke", "Intensität", "Volumen", "Signal"];
+  const termsT = ["Speicher", "Reaktion", "Verzögerung", "Trägheit"];
+  const termsMETA = ["420", "SOS", "101", "Herz", "∞", "Leben"];
 
-    function setTooltip(key) {
-      tooltip.innerText = terms[key][Math.floor(Math.random() * terms[key].length)];
-      tooltip.classList.remove("hidden");
-    }
+  let intervalF, intervalA, intervalT, intervalMETA;
 
-    function moveTooltip(e) {
-      tooltip.style.left = `${e.pageX}px`;
-      tooltip.style.top = `${e.pageY}px`;
-    }
+  function startTooltipCycle(id, terms) {
+    const tooltip = document.getElementById("tooltip" + id);
+    return setInterval(() => {
+      tooltip.innerText = terms[Math.floor(Math.random() * terms.length)];
+    }, 800);
+  }
 
-    function hideTooltip() {
-      tooltip.classList.add("hidden");
-    }
+  function stopTooltipCycle(intervalId) {
+    clearInterval(intervalId);
+  }
 
-    function showText(id) {
-      ["F", "A", "T", "META"].forEach(s => {
-        document.getElementById("text" + s).classList.add("hidden");
-      });
-      document.getElementById("text" + id).classList.remove("hidden");
-    }
+  function showText(id) {
+    ["F", "A", "T", "META"].forEach(s => {
+      document.getElementById("text" + s).classList.add("hidden");
+    });
+    document.getElementById("text" + id).classList.remove("hidden");
+  }
 
-    function activateAll() {
-      document.getElementById("symbolF").src = "assets/animations/infinity_F_Animated_Moon.webp";
-      document.getElementById("symbolA").src = "assets/animations/infinity_A_Animated_Earth.webp";
-      document.getElementById("symbolT").src = "assets/animations/infinity_T_Animated_Sun.webp";
-    }
+  function activateImage(img, activeSrc) {
+    img.dataset.original = img.src;
+    img.src = activeSrc;
+  }
 
-    function deactivateAll() {
-      document.getElementById("symbolF").src = "assets/animations/infinity_F_static.webp";
-      document.getElementById("symbolA").src = "assets/animations/infinity_A_static.webp";
-      document.getElementById("symbolT").src = "assets/animations/infinity_T_static.webp";
-    }
-  </script>
+  function deactivateImage(img) {
+    img.src = img.dataset.original;
+  }
+
+  // Setup for each symbol
+  window.onload = () => {
+    const F = document.querySelector('#tooltipF').parentElement.querySelector('img');
+    const A = document.querySelector('#tooltipA').parentElement.querySelector('img');
+    const T = document.querySelector('#tooltipT').parentElement.querySelector('img');
+    const M = document.querySelector('#tooltipMETA').parentElement.querySelector('img');
+
+    // F
+    F.addEventListener('mouseenter', () => {
+      intervalF = startTooltipCycle("F", termsF);
+      activateImage(F, "assets/animations/infinity_F_Animated_Moon.webp");
+    });
+    F.addEventListener('mouseleave', () => {
+      stopTooltipCycle(intervalF);
+      deactivateImage(F);
+    });
+
+    // A
+    A.addEventListener('mouseenter', () => {
+      intervalA = startTooltipCycle("A", termsA);
+      activateImage(A, "assets/animations/infinity_A_Animated_Earth.webp");
+    });
+    A.addEventListener('mouseleave', () => {
+      stopTooltipCycle(intervalA);
+      deactivateImage(A);
+    });
+
+    // T
+    T.addEventListener('mouseenter', () => {
+      intervalT = startTooltipCycle("T", termsT);
+      activateImage(T, "assets/animations/infinity_T_Animated_Sun.webp");
+    });
+    T.addEventListener('mouseleave', () => {
+      stopTooltipCycle(intervalT);
+      deactivateImage(T);
+    });
+
+    // META
+    M.addEventListener('mouseenter', () => {
+      intervalMETA = startTooltipCycle("META", termsMETA);
+      // Selbst auf statisch
+      activateImage(M, "assets/animations/infinity_T_static.webp");
+      // Andere aktivieren
+      activateImage(F, "assets/animations/infinity_F_Animated_Moon.webp");
+      activateImage(A, "assets/animations/infinity_A_Animated_Earth.webp");
+      activateImage(T, "assets/animations/infinity_T_Animated_Sun.webp");
+    });
+
+    M.addEventListener('mouseleave', () => {
+      stopTooltipCycle(intervalMETA);
+      // Andere deaktivieren
+      deactivateImage(F);
+      deactivateImage(A);
+      deactivateImage(T);
+      // META wieder auf animiert
+      M.src = "assets/animations/infinity_T_Animated_Sun.webp";
+    });
+  };
+</script>
 </body>
 </html>
