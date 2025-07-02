@@ -37,7 +37,7 @@
       justify-content: center;
       flex-wrap: wrap;
       gap: 1.5em;
-      margin: 2em 0;
+      margin: 3.5em 0 2em;
       align-items: center;
     }
     .symbol-container {
@@ -47,16 +47,23 @@
       align-items: center;
     }
     .tooltip {
-      position: fixed;
-      background-color: rgba(0, 0, 0, 0.7);
-      color: #fff;
-      padding: 5px 10px;
-      border-radius: 5px;
-      font-size: 0.9em;
+      position: absolute;
+      top: -2.5em;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 6px 12px;
+      font-size: 0.85em;
+      border-radius: 8px;
       white-space: nowrap;
+      z-index: 10;
       pointer-events: none;
-      transform: translate(-50%, -150%);
-      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .symbol-container:hover .tooltip {
+      opacity: 1;
     }
     .symbol {
       width: 18vw;
@@ -98,28 +105,26 @@
   </header>
 
   <div class="symbols">
-  <div class="symbol-container">
-    <div class="tooltip" id="tooltipF"></div>
-    <img id="symbolF" src="assets/animations/infinity_F_static.webp" class="symbol" alt="Frequenz">
+    <div class="symbol-container" onmouseover="setTooltip('F')" onmousemove="moveTooltip(event)" onmouseout="hideTooltip()" onclick="showText('F')">
+      <div class="tooltip" id="tooltipF"></div>
+      <img id="symbolF" src="assets/animations/infinity_F_static.webp" class="symbol" alt="Frequenz">
+    </div>
+    <span class="equals">&asymp;</span>
+    <div class="symbol-container" onmouseover="setTooltip('A')" onmousemove="moveTooltip(event)" onmouseout="hideTooltip()" onclick="showText('A')">
+      <div class="tooltip" id="tooltipA"></div>
+      <img id="symbolA" src="assets/animations/infinity_A_static.webp" class="symbol" alt="Amplitude">
+    </div>
+    <span class="equals">&asymp;</span>
+    <div class="symbol-container" onmouseover="setTooltip('T')" onmousemove="moveTooltip(event)" onmouseout="hideTooltip()" onclick="showText('T')">
+      <div class="tooltip" id="tooltipT"></div>
+      <img id="symbolT" src="assets/animations/infinity_T_static.webp" class="symbol" alt="Trägheit">
+    </div>
+    <span class="equals">=</span>
+    <div class="symbol-container" onmouseover="setTooltip('META')" onmousemove="moveTooltip(event)" onmouseout="hideTooltip()" onclick="showText('META')">
+      <div class="tooltip" id="tooltipMETA"></div>
+      <img id="symbolMETA" src="assets/animations/infinity_T_Animated_Sun.webp" class="symbol" alt="Meta">
+    </div>
   </div>
-  <span class="equals">&asymp;</span>
-  <div class="symbol-container">
-    <div class="tooltip" id="tooltipA"></div>
-    <img id="symbolA" src="assets/animations/infinity_A_static.webp" class="symbol" alt="Amplitude">
-  </div>
-  <span class="equals">&asymp;</span>
-  <div class="symbol-container">
-    <div class="tooltip" id="tooltipT"></div>
-    <img id="symbolT" src="assets/animations/infinity_T_static.webp" class="symbol" alt="Trägheit">
-  </div>
-  <span class="equals">=</span>
-  <div class="symbol-container">
-    <div class="tooltip" id="tooltipMETA"></div>
-    <img id="symbolMETA" src="assets/animations/infinity_T_Animated_Sun.webp" class="symbol" alt="Meta">
-  </div>
-</div>
-
-  <div id="tooltip" class="tooltip hidden"></div>
 
   <section class="section hidden" id="textF">
     <h2>Frequenz</h2>
@@ -143,86 +148,75 @@
   </footer>
 
 <script>
-  const termsF = ["Frequenz", "Zeit", "Bewegung", "Impuls", "Welle"];
-  const termsA = ["Stärke", "Intensität", "Volumen", "Signal"];
-  const termsT = ["Speicher", "Reaktion", "Verzögerung", "Trägheit"];
-  const termsMETA = ["420", "SOS", "101", "Herz", "∞", "Leben"];
+  const terms = {
+    F: ["Frequenz", "Impuls", "Welle", "Zyklus", "Zeit"],
+    A: ["Stärke", "Amplitude", "Schwankung", "Intensität"],
+    T: ["Trägheit", "Speicherung", "Verzögerung", "Beharrung"],
+    META: ["Leben", "Herz", "420", "SOS", "101", "∞"]
+  };
 
-  function randomTerm(list) {
-    return list[Math.floor(Math.random() * list.length)];
+  let rotateIntervals = {};
+  let isMetaHovered = false;
+
+  function setTooltip(id) {
+    const tooltip = document.getElementById("tooltip" + id);
+    const termList = terms[id];
+    if (!tooltip || !termList) return;
+
+    if (id === "META") {
+      tooltip.innerText = termList[Math.floor(Math.random() * termList.length)];
+      isMetaHovered = true;
+      document.getElementById("symbolMETA").src = "assets/animations/infinity_T_static.webp";
+      ["F", "A", "T"].forEach(key => {
+        document.getElementById("symbol" + key).src = `assets/animations/infinity_${key}_Animated_${getElementSuffix(key)}.webp`;
+        clearInterval(rotateIntervals[key]);
+        rotateIntervals[key] = setInterval(() => {
+          const el = document.getElementById("tooltip" + key);
+          if (el) el.innerText = terms[key][Math.floor(Math.random() * terms[key].length)];
+        }, 800);
+      });
+    } else {
+      tooltip.innerText = termList[Math.floor(Math.random() * termList.length)];
+      clearInterval(rotateIntervals[id]);
+      rotateIntervals[id] = setInterval(() => {
+        if (!isMetaHovered) {
+          tooltip.innerText = termList[Math.floor(Math.random() * termList.length)];
+        }
+      }, 1000);
+      document.getElementById("symbol" + id).src = `assets/animations/infinity_${id}_Animated_${getElementSuffix(id)}.webp`;
+    }
   }
 
-  function updateTooltip(tooltip, terms, intervalName) {
-    window[intervalName] = setInterval(() => {
-      tooltip.innerText = randomTerm(terms);
-    }, 800);
+  function hideTooltip() {
+    isMetaHovered = false;
+    Object.keys(rotateIntervals).forEach(k => clearInterval(rotateIntervals[k]));
+    ["F", "A", "T", "META"].forEach(k => {
+      const tip = document.getElementById("tooltip" + k);
+      if (tip) tip.innerText = "";
+      const suffix = getElementSuffix(k);
+      const img = document.getElementById("symbol" + k);
+      if (img) {
+        img.src = k === "META"
+          ? "assets/animations/infinity_T_Animated_Sun.webp"
+          : `assets/animations/infinity_${k}_static.webp`;
+      }
+    });
   }
 
-  function clearTooltip(intervalName) {
-    clearInterval(window[intervalName]);
+  function moveTooltip(e) {
+    const tooltip = e.currentTarget.querySelector(".tooltip");
+    if (tooltip) {
+      tooltip.style.left = `${e.offsetX}px`;
+      tooltip.style.top = `${e.offsetY - 40}px`;
+    }
   }
 
-  window.addEventListener('DOMContentLoaded', () => {
-    const F = document.querySelector('#tooltipF').parentElement.querySelector('img');
-    const A = document.querySelector('#tooltipA').parentElement.querySelector('img');
-    const T = document.querySelector('#tooltipT').parentElement.querySelector('img');
-    const M = document.querySelector('#tooltipMETA').parentElement.querySelector('img');
-
-    const TF = document.getElementById("tooltipF");
-    const TA = document.getElementById("tooltipA");
-    const TT = document.getElementById("tooltipT");
-    const TM = document.getElementById("tooltipMETA");
-
-    // F
-    F.addEventListener("mouseenter", () => {
-      updateTooltip(TF, termsF, "intF");
-      F.dataset.original = F.src;
-      F.src = "assets/animations/infinity_F_Animated_Moon.webp";
-    });
-    F.addEventListener("mouseleave", () => {
-      clearTooltip("intF");
-      F.src = F.dataset.original;
-    });
-
-    // A
-    A.addEventListener("mouseenter", () => {
-      updateTooltip(TA, termsA, "intA");
-      A.dataset.original = A.src;
-      A.src = "assets/animations/infinity_A_Animated_Earth.webp";
-    });
-    A.addEventListener("mouseleave", () => {
-      clearTooltip("intA");
-      A.src = A.dataset.original;
-    });
-
-    // T
-    T.addEventListener("mouseenter", () => {
-      updateTooltip(TT, termsT, "intT");
-      T.dataset.original = T.src;
-      T.src = "assets/animations/infinity_T_Animated_Sun.webp";
-    });
-    T.addEventListener("mouseleave", () => {
-      clearTooltip("intT");
-      T.src = T.dataset.original;
-    });
-
-    // META
-    M.addEventListener("mouseenter", () => {
-      updateTooltip(TM, termsMETA, "intM");
-      M.dataset.original = M.src;
-      M.src = "assets/animations/infinity_T_static.webp"; // Stabil bleibend
-      F.src = "assets/animations/infinity_F_Animated_Moon.webp";
-      A.src = "assets/animations/infinity_A_Animated_Earth.webp";
-      T.src = "assets/animations/infinity_T_Animated_Sun.webp";
-    });
-    M.addEventListener("mouseleave", () => {
-      clearTooltip("intM");
-      M.src = "assets/animations/infinity_T_Animated_Sun.webp";
-      F.src = "assets/animations/infinity_F_static.webp";
-      A.src = "assets/animations/infinity_A_static.webp";
-      T.src = "assets/animations/infinity_T_static.webp";
-    });
-  });
+  function getElementSuffix(id) {
+    if (id === "F") return "Moon";
+    if (id === "A") return "Earth";
+    if (id === "T" || id === "META") return "Sun";
+    return "";
+  }
 
   function showText(id) {
     ["F", "A", "T", "META"].forEach(s => {
