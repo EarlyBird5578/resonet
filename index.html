@@ -193,68 +193,6 @@
     ["F", "A", "T", "META"].forEach(s => {
       document.getElementById("text" + s).classList.add("hidden");
     });
-
-    // Symbole und Begriffe für FAT
-    const ids = ["F", "A", "T"];
-    const terms = {
-      F: termsF,
-      A: termsA,
-      T: termsT,
-    };
-
-    ids.forEach(id => {
-      const img = document.getElementById("symbol" + id);
-      const tooltip = document.getElementById("tooltip" + id);
-
-      img.src = `assets/animations/infinity_${id}_Animated_${id === "F" ? "Moon" : id === "A" ? "Earth" : "Sun"}.webp`;
-      tooltip.innerText = randomTerm(terms[id]);
-    });
-
-    // META pulsiert nur leicht → Bild bleibt, Begriff auf ∞
-    const metaImg = document.getElementById("symbolMETA");
-    const tooltipM = document.getElementById("tooltipMETA");
-
-    metaImg.src = "assets/animations/infinity_T_static.webp";  // für kurzen Reset
-    tooltipM.innerText = "∞";
-
-    // Nach 1.38s wieder zurück in Ursprungszustand
-    setTimeout(() => {
-      ids.forEach(id => {
-        document.getElementById("symbol" + id).src = `assets/animations/infinity_${id}_static.webp`;
-        document.getElementById("tooltip" + id).innerText = id;
-      });
-      metaImg.src = "assets/animations/infinity_T_Animated_Sun.webp";
-    }, 1380);
-  });
-
-    // ReSonet Puls-Animation bei Klick
-  document.querySelector('header h1').addEventListener('click', () => {
-    const ids = ["F", "A", "T"];
-    const metaImg = document.getElementById("symbolMETA");
-    const termEls = {
-      F: document.getElementById("tooltipF"),
-      A: document.getElementById("tooltipA"),
-      T: document.getElementById("tooltipT"),
-      META: document.getElementById("tooltipMETA")
-    };
-
-    // Aktiviere alle Symbole
-    ids.forEach(id => {
-      document.getElementById("symbol" + id).src = `assets/animations/infinity_${id}_Animated_${id === "F" ? "Moon" : id === "A" ? "Earth" : "Sun"}.webp`;
-      termEls[id].innerText = randomTerm(window["terms" + id]);
-    });
-
-    // META: bleib animiert, aber "resync" den Begriff
-    metaImg.src = "assets/animations/infinity_T_static.webp";
-    termEls.META.innerText = "∞";
-
-    // Nach 1,38s zurück in statisch
-    setTimeout(() => {
-      ids.forEach(id => {
-        document.getElementById("symbol" + id).src = `assets/animations/infinity_${id}_static.webp`;
-        termEls[id].innerText = id;
-      });
-      metaImg.src = "assets/animations/infinity_T_Animated_Sun.webp";
     }, 1380);
   });
 
