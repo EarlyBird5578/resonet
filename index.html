@@ -89,7 +89,7 @@
 <body>
   <header>
     <h1>ReSonet</h1>
-    <p class="subtitle">Ein Netzwerk für kohärente Wahrheit</p>
+    <p class="subtitle" id="subtitleText">Ein Netzwerk für kohärente Wahrheit</p>
   </header>
 
   <div class="symbols">
@@ -122,6 +122,15 @@
 </footer>
 
 <script>
+  window.addEventListener("DOMContentLoaded", () => {
+  const browserLang = navigator.language.slice(0, 2);
+  if (["de", "en"].includes(browserLang)) {
+    currentLang = browserLang;
+  }
+  document.getElementById("languageToggle").textContent = "Sprache: " + currentLang.toUpperCase();
+  updateSubtitle();
+});
+
   const intervalTime = 1380;
   const terms = {
     F: ["Frequenz", "Zeit", "Bewegung", "Impuls", "Welle", "⁓", ".", "Mond", "Anfang", "Geburt", "Ursprung", "Eis"],
@@ -220,6 +229,15 @@
   });
 let currentLang = "de";
 let lastLoaded = null;
+  
+  const subtitles = {
+  de: "Ein Netzwerk für kohärente Wahrheit",
+  en: "A network for coherent truth"
+};
+
+function updateSubtitle() {
+  document.getElementById("subtitleText").textContent = subtitles[currentLang];
+}
 
 function loadText(id) {
   lastLoaded = id;
@@ -236,7 +254,8 @@ function loadText(id) {
 function toggleLanguage() {
   currentLang = currentLang === "de" ? "en" : "de";
   document.getElementById("languageToggle").textContent = "Sprache: " + currentLang.toUpperCase();
-  if (lastLoaded) loadText(lastLoaded); // Bonus: zuletzt gezeigte Seite neu laden
+  updateSubtitle();
+  if (lastLoaded) loadText(lastLoaded);
 }
   rotateLabel("META");
 </script>
