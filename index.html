@@ -133,11 +133,23 @@
 
   const intervalTime = 1380;
   const terms = {
-    F: ["Frequenz", "Zeit", "Bewegung", "Impuls", "Welle", "⁓", ".", "Mond", "Anfang", "Geburt", "Ursprung", "Eis"],
-    A: ["Amplitude", "Stärke", "Intensität", "Volumen", "Signal", "!", "Erde", "Anpassung", "Wiederholung", "Aktiv", "42", "Zerstörrung", "Wasser"],
-    T: ["Trägheit", "Speicher", "Reaktion", "Verzögerung", "Trägheit", "420", "SOS", "!", "Sonne", "Stein", "Angst", "Gas"],
-    META: ["420", "SOS", "101", "Herz", "Leben", "5578", "", "Φ", "Bewusstsein", "Fluide", "Energie", "Materie", "Erinnerung", "Schöpfung", "Plasma", "Diamant", "Liebe"]
-  };
+  F: {
+    de: ["Frequenz", "Zeit", "Bewegung", "Impuls", "Welle", "⁓", "Null", "Mond", "Anfang", "Geburt", "Ursprung", "Eis"],
+    en: ["Frequency", "Time", "Motion", "Impulse", "Wave", "⁓", "Zero", "Moon", "Beginning" "Birth", "Origin", "Ice"]
+  },
+  A: {
+    de: ["Amplitude", "Stärke", "Intensität", "Volumen", "Signal", "≈", "Erde", "Anpassung", "Wiederholung", "Aktiv", "42", "Zerstörrung", "Wasser"],
+    en: ["Amplitude", "Strength", "Intensity", "Volume", "Signal", "≈", "Earth", "Repetition", "Active", "Water"]
+  },
+  T: {
+    de: ["Trägheit", "Reaktion", "Verzögerung", "Speicher", "Sonne", "∝", "Stein", "Angst", "Gas", "Halt", "π"],
+    en: ["Inertia", "Reaction", "Delay", "Memory", "Sun", "∝" "Stone", "Fear", "Gas", "Hold", "π"]
+  },
+  META: {
+    de: ["Herz", "Leben", "Energie", "Bewusstsein", "Schöpfung", "Plasma", "Liebe", "⊗", "ϕ"],
+    en: ["Heart", "Life", "Energy", "Consciousness", "Creation", "Plasma", "Love", "⊗", "ϕ"]
+  }
+};
 
   const labels = {
     F: document.getElementById("labelF"),
