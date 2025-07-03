@@ -186,15 +186,6 @@
     });
     document.getElementById("text" + id).classList.remove("hidden");
   }
-  
-     // ReSonet Puls bei Klick auf Titel
-  document.querySelector('header h1').addEventListener('click', () => {
-    // Verstecke alle Textsektionen unten
-    ["F", "A", "T", "META"].forEach(s => {
-      document.getElementById("text" + s).classList.add("hidden");
-    });
-    }, 1380);
-  });
 
   // Hover Verhalten definieren
   symbols.F.addEventListener("mouseenter", () => {
