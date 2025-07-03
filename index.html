@@ -46,11 +46,9 @@
       flex-direction: column;
       align-items: center;
     }
-    .label {
+    .symbol-label {
       font-weight: bold;
-      font-size: 1.2em;
-      margin-bottom: 0.2em;
-      color: #000;
+      margin-bottom: 0.5em;
     }
     .symbol {
       width: 18vw;
@@ -66,6 +64,7 @@
       font-size: 2em;
       margin: 0 0.5em;
       color: #333;
+      align-self: center;
     }
     .section {
       max-width: 800px;
@@ -92,119 +91,144 @@
   </header>
 
   <div class="symbols">
-    <div class="symbol-container">
-      <div class="label" id="labelF">F</div>
+    <div class="symbol-container" onclick="showText('F')">
+      <div class="symbol-label" id="labelF">F</div>
       <img id="symbolF" src="assets/animations/infinity_F_static.webp" class="symbol" alt="Frequenz">
     </div>
     <span class="equals">&asymp;</span>
-    <div class="symbol-container">
-      <div class="label" id="labelA">A</div>
+    <div class="symbol-container" onclick="showText('A')">
+      <div class="symbol-label" id="labelA">A</div>
       <img id="symbolA" src="assets/animations/infinity_A_static.webp" class="symbol" alt="Amplitude">
     </div>
     <span class="equals">&asymp;</span>
-    <div class="symbol-container">
-      <div class="label" id="labelT">T</div>
+    <div class="symbol-container" onclick="showText('T')">
+      <div class="symbol-label" id="labelT">T</div>
       <img id="symbolT" src="assets/animations/infinity_T_static.webp" class="symbol" alt="Trägheit">
     </div>
     <span class="equals">=</span>
-    <div class="symbol-container">
-      <div class="label" id="labelMETA">∞</div>
+    <div class="symbol-container" onclick="showText('META')">
+      <div class="symbol-label" id="labelMETA">∞</div>
       <img id="symbolMETA" src="assets/animations/infinity_T_Animated_Sun.webp" class="symbol" alt="Meta">
     </div>
   </div>
+
+  <section class="section hidden" id="textF">
+    <h2>Frequenz</h2>
+    <p>[Dein Text für F hier]</p>
+  </section>
+  <section class="section hidden" id="textA">
+    <h2>Amplitude</h2>
+    <p>[Dein Text für A hier]</p>
+  </section>
+  <section class="section hidden" id="textT">
+    <h2>Trägheit</h2>
+    <p>[Dein Text für T hier]</p>
+  </section>
+  <section class="section hidden" id="textMETA">
+    <h2>Gesamtheit</h2>
+    <p>[Dein Text für META hier]</p>
+  </section>
 
   <footer>
     ReSonet v0.1 · Made with Liebe & Logik · <a href="#" style="color:#1abc9c; text-decoration:none;">Sprache: DE</a>
   </footer>
 
-<script>
-  const termsF = ["Frequenz", "Zeit", "Bewegung", "Impuls", "Welle"];
-  const termsA = ["Stärke", "Intensität", "Volumen", "Signal"];
-  const termsT = ["Speicher", "Reaktion", "Verzögerung", "Trägheit"];
-  const termsMETA = ["420", "SOS", "101", "Herz", "∞", "Leben"];
+  <script>
+    const labelF = document.getElementById("labelF");
+    const labelA = document.getElementById("labelA");
+    const labelT = document.getElementById("labelT");
+    const labelMETA = document.getElementById("labelMETA");
 
-  let intervalF, intervalA, intervalT, intervalMETA;
-  let metaHover = false;
+    const symbolF = document.getElementById("symbolF");
+    const symbolA = document.getElementById("symbolA");
+    const symbolT = document.getElementById("symbolT");
+    const symbolMETA = document.getElementById("symbolMETA");
 
-  function startRotation(id, terms, intervalRef) {
-    clearInterval(intervalRef);
-    const label = document.getElementById("label" + id);
-    return setInterval(() => {
-      label.textContent = terms[Math.floor(Math.random() * terms.length)];
-    }, 1380);
-  }
+    const textSections = ["F", "A", "T", "META"];
 
-  function stopRotation(id, defaultText) {
-    const label = document.getElementById("label" + id);
-    label.textContent = defaultText;
-  }
+    const termsF = ["Frequenz", "Zeit", "Bewegung", "Impuls", "Welle"];
+    const termsA = ["Stärke", "Intensität", "Volumen", "Signal"];
+    const termsT = ["Speicher", "Reaktion", "Verzögerung", "Trägheit"];
+    const termsMETA = ["420", "SOS", "101", "Herz", "∞", "Leben"];
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const F = document.getElementById("symbolF");
-    const A = document.getElementById("symbolA");
-    const T = document.getElementById("symbolT");
-    const M = document.getElementById("symbolMETA");
+    let intF = null, intA = null, intT = null, intM = null;
+    const duration = 1380; // 1.38s
 
-    F.addEventListener("mouseenter", () => {
-      F.dataset.original = F.src;
-      F.src = "assets/animations/infinity_F_Animated_Moon.webp";
-      intervalF = startRotation("F", termsF, intervalF);
-    });
-    F.addEventListener("mouseleave", () => {
-      clearInterval(intervalF);
-      F.src = F.dataset.original;
-      stopRotation("F", "F");
-    });
+    function startRotation(label, terms, intervalRef) {
+      if (window[intervalRef]) clearInterval(window[intervalRef]);
+      window[intervalRef] = setInterval(() => {
+        label.textContent = terms[Math.floor(Math.random() * terms.length)];
+      }, duration);
+    }
 
-    A.addEventListener("mouseenter", () => {
-      A.dataset.original = A.src;
-      A.src = "assets/animations/infinity_A_Animated_Earth.webp";
-      intervalA = startRotation("A", termsA, intervalA);
-    });
-    A.addEventListener("mouseleave", () => {
-      clearInterval(intervalA);
-      A.src = A.dataset.original;
-      stopRotation("A", "A");
-    });
+    function stopRotation(label, defaultText, intervalRef) {
+      clearInterval(window[intervalRef]);
+      label.textContent = defaultText;
+    }
 
-    T.addEventListener("mouseenter", () => {
-      T.dataset.original = T.src;
-      T.src = "assets/animations/infinity_T_Animated_Sun.webp";
-      intervalT = startRotation("T", termsT, intervalT);
-    });
-    T.addEventListener("mouseleave", () => {
-      clearInterval(intervalT);
-      T.src = T.dataset.original;
-      stopRotation("T", "T");
+    function showText(id) {
+      textSections.forEach(s => document.getElementById("text" + s).classList.add("hidden"));
+      document.getElementById("text" + id).classList.remove("hidden");
+    }
+
+    // META hover handling
+    symbolMETA.addEventListener("mouseenter", () => {
+      clearInterval(intM);
+      labelMETA.textContent = labelMETA.textContent;
+      startRotation(labelF, termsF, "intF");
+      startRotation(labelA, termsA, "intA");
+      startRotation(labelT, termsT, "intT");
+
+      symbolMETA.src = "assets/animations/infinity_T_static.webp";
+      symbolF.src = "assets/animations/infinity_F_Animated_Moon.webp";
+      symbolA.src = "assets/animations/infinity_A_Animated_Earth.webp";
+      symbolT.src = "assets/animations/infinity_T_Animated_Sun.webp";
     });
 
-    M.addEventListener("mouseenter", () => {
-      metaHover = true;
-      M.dataset.original = M.src;
-      M.src = "assets/animations/infinity_T_static.webp"; // statisch
-      clearInterval(intervalMETA);
-      document.getElementById("labelMETA").textContent = termsMETA[Math.floor(Math.random() * termsMETA.length)];
+    symbolMETA.addEventListener("mouseleave", () => {
+      startRotation(labelMETA, termsMETA, "intM");
+      stopRotation(labelF, "F", "intF");
+      stopRotation(labelA, "A", "intA");
+      stopRotation(labelT, "T", "intT");
 
-      // Starte Rotation der anderen
-      intervalF = startRotation("F", termsF, intervalF);
-      intervalA = startRotation("A", termsA, intervalA);
-      intervalT = startRotation("T", termsT, intervalT);
+      symbolMETA.src = "assets/animations/infinity_T_Animated_Sun.webp";
+      symbolF.src = "assets/animations/infinity_F_static.webp";
+      symbolA.src = "assets/animations/infinity_A_static.webp";
+      symbolT.src = "assets/animations/infinity_T_static.webp";
     });
 
-    M.addEventListener("mouseleave", () => {
-      metaHover = false;
-      M.src = "assets/animations/infinity_T_Animated_Sun.webp";
-      clearInterval(intervalF);
-      clearInterval(intervalA);
-      clearInterval(intervalT);
-      stopRotation("F", "F");
-      stopRotation("A", "A");
-      stopRotation("T", "T");
-      intervalMETA = startRotation("META", termsMETA, intervalMETA);
+    // F
+    symbolF.addEventListener("mouseenter", () => {
+      startRotation(labelF, termsF, "intF");
+      symbolF.src = "assets/animations/infinity_F_Animated_Moon.webp";
+    });
+    symbolF.addEventListener("mouseleave", () => {
+      stopRotation(labelF, "F", "intF");
+      symbolF.src = "assets/animations/infinity_F_static.webp";
     });
 
-    intervalMETA = startRotation("META", termsMETA, intervalMETA);
-  });
-</script>
+    // A
+    symbolA.addEventListener("mouseenter", () => {
+      startRotation(labelA, termsA, "intA");
+      symbolA.src = "assets/animations/infinity_A_Animated_Earth.webp";
+    });
+    symbolA.addEventListener("mouseleave", () => {
+      stopRotation(labelA, "A", "intA");
+      symbolA.src = "assets/animations/infinity_A_static.webp";
+    });
+
+    // T
+    symbolT.addEventListener("mouseenter", () => {
+      startRotation(labelT, termsT, "intT");
+      symbolT.src = "assets/animations/infinity_T_Animated_Sun.webp";
+    });
+    symbolT.addEventListener("mouseleave", () => {
+      stopRotation(labelT, "T", "intT");
+      symbolT.src = "assets/animations/infinity_T_static.webp";
+    });
+
+    // Start META rotation from beginning
+    startRotation(labelMETA, termsMETA, "intM");
+  </script>
 </body>
 </html>
