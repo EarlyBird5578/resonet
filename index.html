@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ReSonet – FAT in Harmonie</title>
   <style>
-    :root {
-      --golden: 1.618;
-    }
     html, body {
       margin: 0;
       padding: 0;
@@ -23,15 +20,6 @@
       box-shadow: 0 0 20px rgba(0,0,0,0.6);
       color: #fff;
     }
-    h1 {
-      margin: 0;
-      font-size: 2.5em;
-    }
-    p.subtitle {
-      margin-top: 0.5em;
-      font-style: italic;
-      color: #bbb;
-    }
     .symbols {
       display: flex;
       justify-content: center;
@@ -39,23 +27,20 @@
       gap: 1.5em;
       margin: 2em 0;
       align-items: center;
+      position: relative;
     }
     .symbol-container {
-      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
     }
     .label {
-      position: relative;
-      margin-bottom: 0.3em;
-      background-color: rgba(0, 0, 0, 0.7);
-      color: #fff;
-      padding: 5px 10px;
-      border-radius: 5px;
-      font-size: 1em;
-      white-space: nowrap;
-      text-align: center;
+      margin-bottom: 0.5em;
+      font-weight: bold;
+      font-size: 1.1em;
+      color: #000;
+      transition: opacity 0.3s ease;
     }
     .symbol {
       width: 18vw;
@@ -91,140 +76,112 @@
   </style>
 </head>
 <body>
-  <header>
-    <h1>ReSonet</h1>
-    <p class="subtitle">Ein Netzwerk für kohärente Wahrheit</p>
-  </header>
-
-  <div class="symbols">
-    <div class="symbol-container">
-      <div class="label" id="labelF">F</div>
-      <img id="symbolF" src="assets/animations/infinity_F_static.webp" class="symbol" alt="Frequenz">
-    </div>
-    <span class="equals">≈</span>
-    <div class="symbol-container">
-      <div class="label" id="labelA">A</div>
-      <img id="symbolA" src="assets/animations/infinity_A_static.webp" class="symbol" alt="Amplitude">
-    </div>
-    <span class="equals">≈</span>
-    <div class="symbol-container">
-      <div class="label" id="labelT">T</div>
-      <img id="symbolT" src="assets/animations/infinity_T_static.webp" class="symbol" alt="Trägheit">
-    </div>
-    <span class="equals">=</span>
-    <div class="symbol-container">
-      <div class="label" id="labelMETA">∞</div>
-      <img id="symbolMETA" src="assets/animations/infinity_T_Animated_Sun.webp" class="symbol" alt="Meta">
-    </div>
+<header>
+  <h1>ReSonet</h1>
+  <p class="subtitle">Ein Netzwerk für kohärente Wahrheit</p>
+</header>
+<div class="symbols">
+  <div class="symbol-container" onmouseenter="start('F')" onmouseleave="stop('F')" onclick="showText('F')">
+    <div class="label" id="labelF">F</div>
+    <img id="symbolF" src="assets/animations/infinity_F_static.webp" class="symbol" alt="Frequenz">
   </div>
+  <span class="equals">≈</span>
+  <div class="symbol-container" onmouseenter="start('A')" onmouseleave="stop('A')" onclick="showText('A')">
+    <div class="label" id="labelA">A</div>
+    <img id="symbolA" src="assets/animations/infinity_A_static.webp" class="symbol" alt="Amplitude">
+  </div>
+  <span class="equals">≈</span>
+  <div class="symbol-container" onmouseenter="start('T')" onmouseleave="stop('T')" onclick="showText('T')">
+    <div class="label" id="labelT">T</div>
+    <img id="symbolT" src="assets/animations/infinity_T_static.webp" class="symbol" alt="Trägheit">
+  </div>
+  <span class="equals">=</span>
+  <div class="symbol-container" onmouseenter="startMeta()" onmouseleave="stopMeta()" onclick="showText('META')">
+    <div class="label" id="labelMETA">∞</div>
+    <img id="symbolMETA" src="assets/animations/infinity_T_Animated_Sun.webp" class="symbol" alt="Meta">
+  </div>
+</div>
 
-  <section class="section hidden" id="textF">
-    <h2>Frequenz</h2>
-    <p>[Dein Text für F hier]</p>
-  </section>
-  <section class="section hidden" id="textA">
-    <h2>Amplitude</h2>
-    <p>[Dein Text für A hier]</p>
-  </section>
-  <section class="section hidden" id="textT">
-    <h2>Trägheit</h2>
-    <p>[Dein Text für T hier]</p>
-  </section>
-  <section class="section hidden" id="textMETA">
-    <h2>Gesamtheit</h2>
-    <p>[Dein Text für META hier]</p>
-  </section>
+<section class="section hidden" id="textF">
+  <h2>Frequenz</h2>
+  <p>[Dein Text für F hier]</p>
+</section>
+<section class="section hidden" id="textA">
+  <h2>Amplitude</h2>
+  <p>[Dein Text für A hier]</p>
+</section>
+<section class="section hidden" id="textT">
+  <h2>Trägheit</h2>
+  <p>[Dein Text für T hier]</p>
+</section>
+<section class="section hidden" id="textMETA">
+  <h2>Gesamtheit</h2>
+  <p>[Dein Text für META hier]</p>
+</section>
 
-  <footer>
-    ReSonet v0.1 · Made with Liebe & Logik · <a href="#" style="color:#1abc9c; text-decoration:none;">Sprache: DE</a>
-  </footer>
+<footer>
+  ReSonet v0.1 · Made with Liebe & Logik · <a href="#" style="color:#1abc9c; text-decoration:none;">Sprache: DE</a>
+</footer>
 
 <script>
-  const termsF = ["Frequenz", "Zeit", "Bewegung", "Impuls", "Welle"];
-  const termsA = ["Stärke", "Intensität", "Volumen", "Signal"];
-  const termsT = ["Speicher", "Reaktion", "Verzögerung", "Trägheit"];
-  const termsMETA = ["420", "SOS", "101", "Herz", "∞", "Leben"];
+  const terms = {
+    F: ["Frequenz", "Zeit", "Bewegung", "Impuls", "Welle"],
+    A: ["Stärke", "Intensität", "Volumen", "Signal"],
+    T: ["Speicher", "Reaktion", "Verzögerung", "Trägheit"],
+    META: ["420", "SOS", "101", "Herz", "∞", "Leben"]
+  };
 
-  let intervalF, intervalA, intervalT, intervalMETA;
+  const symbols = {
+    F: "infinity_F",
+    A: "infinity_A",
+    T: "infinity_T",
+    META: "infinity_T"
+  };
 
-  function randomTerm(list) {
-    return list[Math.floor(Math.random() * list.length)];
+  let intervals = {};
+
+  function start(key) {
+    const img = document.getElementById("symbol" + key);
+    const label = document.getElementById("label" + key);
+    img.src = `assets/animations/${symbols[key]}_Animated_${key === 'F' ? 'Moon' : key === 'A' ? 'Earth' : 'Sun'}.webp`;
+    intervals[key] = setInterval(() => {
+      label.textContent = terms[key][Math.floor(Math.random() * terms[key].length)];
+    }, 800);
   }
 
-  function startRotation(label, terms, intervalName) {
-    window[intervalName] = setInterval(() => {
-      label.textContent = randomTerm(terms);
-    }, 1000);
+  function stop(key) {
+    const img = document.getElementById("symbol" + key);
+    const label = document.getElementById("label" + key);
+    img.src = `assets/animations/${symbols[key]}_static.webp`;
+    label.textContent = key;
+    clearInterval(intervals[key]);
   }
 
-  function stopRotation(intervalName) {
-    clearInterval(window[intervalName]);
+  let metaLocked = false;
+
+  function startMeta() {
+    metaLocked = true;
+    const label = document.getElementById("labelMETA");
+    document.getElementById("symbolMETA").src = "assets/animations/infinity_T_static.webp";
+    document.getElementById("symbolF").src = "assets/animations/infinity_F_Animated_Moon.webp";
+    document.getElementById("symbolA").src = "assets/animations/infinity_A_Animated_Earth.webp";
+    document.getElementById("symbolT").src = "assets/animations/infinity_T_Animated_Sun.webp";
+    intervals.META = setInterval(() => {
+      label.textContent = terms.META[Math.floor(Math.random() * terms.META.length)];
+    }, 800);
   }
 
-  window.addEventListener('DOMContentLoaded', () => {
-    const F = document.getElementById("symbolF");
-    const A = document.getElementById("symbolA");
-    const T = document.getElementById("symbolT");
-    const M = document.getElementById("symbolMETA");
-
-    const labelF = document.getElementById("labelF");
-    const labelA = document.getElementById("labelA");
-    const labelT = document.getElementById("labelT");
-    const labelMETA = document.getElementById("labelMETA");
-
-    // F Symbol
-    F.addEventListener("mouseenter", () => {
-      labelF.textContent = randomTerm(termsF);
-      F.src = "assets/animations/infinity_F_Animated_Moon.webp";
-    });
-    F.addEventListener("mouseleave", () => {
-      labelF.textContent = "F";
-      F.src = "assets/animations/infinity_F_static.webp";
-    });
-
-    // A Symbol
-    A.addEventListener("mouseenter", () => {
-      labelA.textContent = randomTerm(termsA);
-      A.src = "assets/animations/infinity_A_Animated_Earth.webp";
-    });
-    A.addEventListener("mouseleave", () => {
-      labelA.textContent = "A";
-      A.src = "assets/animations/infinity_A_static.webp";
-    });
-
-    // T Symbol
-    T.addEventListener("mouseenter", () => {
-      labelT.textContent = randomTerm(termsT);
-      T.src = "assets/animations/infinity_T_Animated_Sun.webp";
-    });
-    T.addEventListener("mouseleave", () => {
-      labelT.textContent = "T";
-      T.src = "assets/animations/infinity_T_static.webp";
-    });
-
-    // META Symbol
-    M.addEventListener("mouseenter", () => {
-      labelMETA.textContent = randomTerm(termsMETA);
-      M.src = "assets/animations/infinity_T_static.webp"; // stabil bleiben
-      startRotation(labelF, termsF, "intervalF");
-      startRotation(labelA, termsA, "intervalA");
-      startRotation(labelT, termsT, "intervalT");
-    });
-    M.addEventListener("mouseleave", () => {
-      labelMETA.textContent = "∞";
-      M.src = "assets/animations/infinity_T_Animated_Sun.webp";
-      stopRotation("intervalF");
-      stopRotation("intervalA");
-      stopRotation("intervalT");
-      labelF.textContent = "F";
-      labelA.textContent = "A";
-      labelT.textContent = "T";
-    });
-  });
+  function stopMeta() {
+    metaLocked = false;
+    clearInterval(intervals.META);
+    document.getElementById("labelMETA").textContent = "∞";
+    document.getElementById("symbolMETA").src = "assets/animations/infinity_T_Animated_Sun.webp";
+    stop('F'); stop('A'); stop('T');
+  }
 
   function showText(id) {
-    ["F", "A", "T", "META"].forEach(s => {
-      document.getElementById("text" + s).classList.add("hidden");
+    ["F", "A", "T", "META"].forEach(key => {
+      document.getElementById("text" + key).classList.add("hidden");
     });
     document.getElementById("text" + id).classList.remove("hidden");
   }
