@@ -87,6 +87,50 @@
 #logoButton:hover {
   transform: scale(1.05);
 }
+    .fat-row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5vw;
+  flex-shrink: 1;
+  flex-grow: 1;
+  flex-basis: auto;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 2vw;
+  flex-wrap: wrap; /* erlaubt Umbruch bei ganz kleinen Screens */
+}
+
+.fat-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 20vw;
+  min-width: 70px;
+}
+
+.fat-block img {
+  width: 100%;
+  height: auto;
+  max-width: 100px;
+}
+
+.fat-label {
+  margin-top: 0.3em;
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.fat-op {
+  font-size: 2rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+}
   </style>
 </head>
 <body>
@@ -95,27 +139,27 @@
     <p class="subtitle" id="subtitleText">Ein Netzwerk für kohärente Wahrheit</p>
   </header>
 
-  <div class="symbols">
-    <div class="symbol-container">
-      <div class="symbol-label" id="labelF">F</div>
-      <img id="symbolF" src="assets/animations/infinity_F_static.webp" class="symbol" alt="Frequenz" onclick="loadText('F')">
-    </div>
-    <span class="equals">&asymp;</span>
-    <div class="symbol-container">
-      <div class="symbol-label" id="labelA">A</div>
-      <img id="symbolA" src="assets/animations/infinity_A_static.webp" class="symbol" alt="Amplitude" onclick="loadText('A')">
-    </div>
-    <span class="equals">&asymp;</span>
-    <div class="symbol-container">
-      <div class="symbol-label" id="labelT">T</div>
-      <img id="symbolT" src="assets/animations/infinity_T_static.webp" class="symbol" alt="Trägheit" onclick="loadText('T')">
-    </div>
-    <span class="equals">=</span>
-    <div class="symbol-container">
-      <div class="symbol-label" id="labelMETA">∞</div>
-      <img id="symbolMETA" src="assets/animations/infinity_T_Animated_Sun.webp" class="symbol" alt="Meta" onclick="loadText('META')">
-    </div>
+  <div class="fat-row">
+  <div class="fat-block">
+    <img id="symbolF" src="assets/animations/infinity_F_static.webp" class="symbol" alt="F" onclick="loadText('F')">
+    <div class="fat-label" id="labelF">F</div>
   </div>
+  <div class="fat-op">&asymp;</div>
+  <div class="fat-block">
+    <img id="symbolA" src="assets/animations/infinity_A_static.webp" class="symbol" alt="A" onclick="loadText('A')">
+    <div class="fat-label" id="labelA">A</div>
+  </div>
+  <div class="fat-op">&asymp;</div>
+  <div class="fat-block">
+    <img id="symbolT" src="assets/animations/infinity_T_static.webp" class="symbol" alt="T" onclick="loadText('T')">
+    <div class="fat-label" id="labelT">T</div>
+  </div>
+  <div class="fat-op">=</div>
+  <div class="fat-block">
+    <img id="symbolMETA" src="assets/animations/infinity_T_Animated_Sun.webp" class="symbol" alt="META" onclick="loadText('META')">
+    <div class="fat-label" id="labelMETA">∞</div>
+  </div>
+</div>
 
   <div id="textContent" class="section hidden"></div>
 
