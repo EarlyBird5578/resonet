@@ -95,45 +95,31 @@
   <div class="symbols">
     <div class="symbol-container">
       <div class="symbol-label" id="labelF">F</div>
-      <img id="symbolF" src="assets/animations/infinity_F_static.webp" class="symbol" alt="Frequenz" onclick="showText('F')">
+      <img id="symbolF" src="assets/animations/infinity_F_static.webp" class="symbol" alt="Frequenz" onclick="loadText('F')">
     </div>
     <span class="equals">&asymp;</span>
     <div class="symbol-container">
       <div class="symbol-label" id="labelA">A</div>
-      <img id="symbolA" src="assets/animations/infinity_A_static.webp" class="symbol" alt="Amplitude" onclick="showText('A')">
+      <img id="symbolA" src="assets/animations/infinity_A_static.webp" class="symbol" alt="Amplitude" onclick="loadText('A')">
     </div>
     <span class="equals">&asymp;</span>
     <div class="symbol-container">
       <div class="symbol-label" id="labelT">T</div>
-      <img id="symbolT" src="assets/animations/infinity_T_static.webp" class="symbol" alt="Trägheit" onclick="showText('T')">
+      <img id="symbolT" src="assets/animations/infinity_T_static.webp" class="symbol" alt="Trägheit" onclick="loadText('T')">
     </div>
     <span class="equals">=</span>
     <div class="symbol-container">
       <div class="symbol-label" id="labelMETA">∞</div>
-      <img id="symbolMETA" src="assets/animations/infinity_T_Animated_Sun.webp" class="symbol" alt="Meta" onclick="showText('META')">
+      <img id="symbolMETA" src="assets/animations/infinity_T_Animated_Sun.webp" class="symbol" alt="Meta" onclick="loadText('META')">
     </div>
   </div>
 
-  <section class="section hidden" id="textF">
-    <h2>Frequenz</h2>
-    <p>[Dein Text für F hier]</p>
-  </section>
-  <section class="section hidden" id="textA">
-    <h2>Amplitude</h2>
-    <p>[Dein Text für A hier]</p>
-  </section>
-  <section class="section hidden" id="textT">
-    <h2>Trägheit</h2>
-    <p>[Dein Text für T hier]</p>
-  </section>
-  <section class="section hidden" id="textMETA">
-    <h2>Gesamtheit</h2>
-    <p>[Dein Text für META hier]</p>
-  </section>
+  <div id="textContent" class="section hidden"></div>
 
-  <footer>
-    ReSonet v0.1 · Made with Liebe & Logik · <a href="#" style="color:#1abc9c; text-decoration:none;">Sprache: DE</a>
-  </footer>
+ <footer>
+  ReSonet v0.1 · Made with Liebe & Logik · 
+  <span id="languageToggle" style="color:#1abc9c; cursor:pointer;" onclick="toggleLanguage()">Sprache: DE</span>
+</footer>
 
 <script>
   const intervalTime = 1380;
@@ -232,7 +218,26 @@
       stopRotateLabel(k);
     });
   });
+let currentLang = "de";
+let lastLoaded = null;
 
+function loadText(id) {
+  lastLoaded = id;
+  const filePath = `texts/${currentLang}/text${id}.html`;
+  fetch(filePath)
+    .then(res => res.text())
+    .then(html => {
+      const container = document.getElementById("textContent");
+      container.innerHTML = html;
+      container.classList.remove("hidden");
+    });
+}
+
+function toggleLanguage() {
+  currentLang = currentLang === "de" ? "en" : "de";
+  document.getElementById("languageToggle").textContent = "Sprache: " + currentLang.toUpperCase();
+  if (lastLoaded) loadText(lastLoaded); // Bonus: zuletzt gezeigte Seite neu laden
+}
   rotateLabel("META");
 </script>
 </body>
