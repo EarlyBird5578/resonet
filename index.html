@@ -135,7 +135,7 @@
   const terms = {
   F: {
     de: ["Frequenz", "Zeit", "Bewegung", "Impuls", "Welle", "⁓", "Null", "Mond", "Anfang", "Geburt", "Ursprung", "Eis"],
-    en: ["Frequency", "Time", "Motion", "Impulse", "Wave", "⁓", "Zero", "Moon", "Beginning" "Birth", "Origin", "Ice"]
+    en: ["Frequency", "Time", "Motion", "Impulse", "Wave", "⁓", "Zero", "Moon", "Beginning", "Birth", "Origin", "Ice"]
   },
   A: {
     de: ["Amplitude", "Stärke", "Intensität", "Volumen", "Signal", "≈", "Erde", "Anpassung", "Wiederholung", "Aktiv", "42", "Zerstörrung", "Wasser"],
@@ -143,7 +143,7 @@
   },
   T: {
     de: ["Trägheit", "Reaktion", "Verzögerung", "Speicher", "Sonne", "∝", "Stein", "Angst", "Gas", "Halt", "π"],
-    en: ["Inertia", "Reaction", "Delay", "Memory", "Sun", "∝" "Stone", "Fear", "Gas", "Hold", "π"]
+    en: ["Inertia", "Reaction", "Delay", "Memory", "Sun", "∝", "Stone", "Fear", "Gas", "Hold", "π"]
   },
   META: {
     de: ["Herz", "Leben", "Energie", "Bewusstsein", "Schöpfung", "Plasma", "Liebe", "⊗", "ϕ"],
@@ -177,7 +177,7 @@
   function rotateLabel(id) {
     if (intervals[id]) clearInterval(intervals[id]);
     intervals[id] = setInterval(() => {
-      const t = terms[id];
+      const t = terms[id][currentLang];
       labels[id].textContent = t[Math.floor(Math.random() * t.length)];
     }, intervalTime);
   }
