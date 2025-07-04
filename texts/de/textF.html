@@ -96,14 +96,22 @@
 
 <script>
   function loadContent(url) {
+    const contentDiv = document.getElementById("content");
+
+    // Vorherigen Inhalt löschen (optional mit Animation etc.)
+    contentDiv.innerHTML = "<p>Lade Inhalt...</p>";
+
     fetch(url)
-      .then(response => response.text())
+      .then(response => {
+        if (!response.ok) throw new Error("Seite nicht gefunden.");
+        return response.text();
+      })
       .then(html => {
-        document.getElementById("content").innerHTML = html;
-        window.scrollTo(0, document.getElementById("content").offsetTop); // Optional: Scrollt zum neuen Inhalt
+        contentDiv.innerHTML = html;
+        window.scrollTo(0, contentDiv.offsetTop);
       })
       .catch(error => {
-        document.getElementById("content").innerHTML = "<p>Fehler beim Laden der Seite :(</p>";
+        contentDiv.innerHTML = "<p>Fehler beim Laden der Seite :(</p>";
         console.error("Ladefehler:", error);
       });
   }
