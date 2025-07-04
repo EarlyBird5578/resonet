@@ -132,6 +132,14 @@
   min-width: 30px;
   transform: translateY(0.35em); /* Zaubertrick */
 }
+    #textContent {
+  background-color: #000;
+  color: #fff;
+  padding: 2em;
+  border-radius: 16px;
+  max-width: 800px;
+  margin: 2em auto;
+}
   </style>
 </head>
 <body>
@@ -163,18 +171,6 @@
 </div>
 
   <div id="textContent" class="section hidden"></div>
-  <div id="textLoader" class="section hidden custom-black-container"></div>
-
-<style>
-  .custom-black-container {
-    background-color: #000 !important;
-    color: #fff !important;
-    padding: 2em;
-    border-radius: 16px;
-    max-width: 800px;
-    margin: 2em auto;
-  }
-</style>
 
 <script>
   function loadText(id) {
@@ -351,6 +347,15 @@ function toggleLanguage() {
   window.scrollTo({ top: 0, behavior: "smooth" });
   document.getElementById("textContent").classList.add("hidden");
 });
+  function loadInnerText(relativePath) {
+  const container = document.getElementById("textContent");
+  fetch(`texts/${currentLang}/${relativePath}`)
+    .then(res => res.text())
+    .then(html => {
+      container.innerHTML = html;
+      window.scrollTo({ top: container.offsetTop - 40, behavior: "smooth" });
+    });
+}
 </script>
 </body>
 </html>
