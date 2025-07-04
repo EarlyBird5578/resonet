@@ -89,10 +89,23 @@
 
 <h3>8. Tiefer eintauchen</h3>
 <ul>
-  <li><a href="texts/de/F/textF_impulse.html">Impulse & Resonanz</a></li>
+  <a href="#" onclick="loadContent('/texts/de/F/textF_impulse.html')">Frequenz – Impulse</a>
 </ul>
   <p><em>Diese Seite wird fortlaufend erweitert. Deine eigene Frequenz kann Teil davon werden.</em></p>
 </div>
 
-
+<script>
+  function loadContent(url) {
+    fetch(url)
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById("content").innerHTML = html;
+        window.scrollTo(0, document.getElementById("content").offsetTop); // Optional: Scrollt zum neuen Inhalt
+      })
+      .catch(error => {
+        document.getElementById("content").innerHTML = "<p>Fehler beim Laden der Seite :(</p>";
+        console.error("Ladefehler:", error);
+      });
+  }
+</script>
 
