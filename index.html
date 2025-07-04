@@ -163,6 +163,24 @@
 </div>
 
   <div id="textContent" class="section hidden"></div>
+  <div id="textLoader" class="section hidden" style="background: black; color: white; padding: 2em; border-radius: 16px; max-width: 800px; margin: 2em auto;"></div>
+
+<script>
+  function loadText(id) {
+    lastLoaded = id;
+    const filePath = `texts/${currentLang}/text${id}.html`;
+    fetch(filePath)
+      .then(res => res.text())
+      .then(html => {
+        const main = document.getElementById("textContent");
+        const loader = document.getElementById("textLoader");
+        loader.innerHTML = html;
+        loader.classList.remove("hidden");
+        main.classList.add("hidden");
+        window.scrollTo({ top: loader.offsetTop - 40, behavior: "smooth" });
+      });
+  }
+</script>
 
  <footer>
   ReSonet v0.1 · Made with Liebe & Logik · 
