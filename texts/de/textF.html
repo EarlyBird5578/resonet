@@ -1,34 +1,5 @@
-<head>
-<style>
-  .blackbox {
-    background-color: black;
-    color: white;
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-    max-width: 900px;
-    margin: auto;
-  }
-
-  .blackbox img {
-    max-width: 100%;
-    display: block;
-    margin: 1rem auto;
-    border-radius: 0.5rem;
-  }
-
-  h1, h2, h3 {
-    color: #ffffff;
-  }
-
-  a {
-    color: #f9c74f;
-  }
-</style>
-</head>
-<div class="blackbox">
-  <h2>F – Frequenz</h2>
-  <img src="assets/img/frequenz_impulse.png" alt="Frequenz Ursprung" class="frequenz-header-image" />
+<h2>Einleitung Frequenz</h2>
+<img src="/assets/img/frequenz_impulse.png" />
 <h3>1. Was ist eine Frequenz?</h3>
 <p>
   Eine Frequenz ist eine wiederholende Bewegung – ein Puls, ein Rhythmus, eine Schwingung.
@@ -89,31 +60,5 @@
 
 <h3>8. Tiefer eintauchen</h3>
 <ul>
-  <a href="#" onclick="loadContent('texts/de/F/textF_impulse.html')">Frequenz – Impulse</a>
-</ul>
-  <p><em>Diese Seite wird fortlaufend erweitert. Deine eigene Frequenz kann Teil davon werden.</em></p>
-</div>
-
-<script>
-  function loadContent(url) {
-    const contentDiv = document.getElementById("content");
-
-    // Vorherigen Inhalt löschen (optional mit Animation etc.)
-    contentDiv.innerHTML = "<p>Lade Inhalt...</p>";
-
-    fetch(url)
-      .then(response => {
-        if (!response.ok) throw new Error("Seite nicht gefunden.");
-        return response.text();
-      })
-      .then(html => {
-        contentDiv.innerHTML = html;
-        window.scrollTo(0, contentDiv.offsetTop);
-      })
-      .catch(error => {
-        contentDiv.innerHTML = "<p>Fehler beim Laden der Seite :(</p>";
-        console.error("Ladefehler:", error);
-      });
-  }
-</script>
-
+<a href="#" onclick="loadContent('texts/de/F/textF_impulse.html'); return false;">→ Impulse lesen</a>
+<p><em>Diese Seite wird fortlaufend erweitert. Deine eigene Frequenz kann Teil davon werden.</em></p>
