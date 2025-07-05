@@ -28,7 +28,7 @@ Wir nutzen keine zentrale Institution – der Fluss folgt allein dem Prinzip der
 <script>
 async function fetchBTC() {
   try {
-    const res = await fetch('/pages/api/btc.js');
+    const res = await fetch('/api/btc');
     const data = await res.json();
 
     document.getElementById('btc-balance').innerText = `${data.balance.toFixed(8)} BTC`;
